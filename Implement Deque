@@ -1,0 +1,129 @@
+#include <bits/stdc++.h> 
+class Deque
+{
+public:
+      int *arr; 
+    int front; 
+    int rear; 
+    int size; 
+    Deque(int n)
+    {
+        size = n;
+        arr = new int[n];
+        front = -1; 
+        rear = -1;
+    }
+ 
+    bool pushFront(int x)
+    {
+        // as you know that in circular Queue when we remove  element then our front increases 
+        // or front ++ so by this lets visualise this if you will add or push element from the front 
+        // then the front will move backwards 
+    
+   // 1. this is the first case when the queue is full 
+    if (isFull()){
+            return false ;
+        }
+        // 2. as we know that front = -1 is the condition to show that the queue is empty 
+        // so if the queue is empty then front and rear will both get equla to zero 
+        // showing that one element is present in the queue that's it ... 
+        else if (front == -1){
+             front = rear = 0 ;
+        }
+        // 3. this is for circulating the Queue when after pushing the front reaches towards zero
+        // index so it will go towards the size -1 index 
+        else if (front == 0 &&rear != size - 1){
+             front = size - 1;
+        }
+        // this is the normal flow 
+        else {
+            front--;
+        }
+        // and here we are updating the particular array value 
+        arr[front] = x;
+        return true;
+    }
+ 
+    bool pushRear(int x)
+    {
+        if (isFull()){
+            return false ;
+        }
+        else if (front == -1){
+            front = rear = 0 ;
+        }
+        else if (rear == size - 1){
+            rear = 0;
+        }
+        else {
+            // as you want to add the element in the other side right so ofcoursse the rear will
+            // incrase and if you want to add or push the element in the front then front 
+            // will decrease these are the normal flow ..
+            rear++;
+        }
+        arr[rear] = x;
+        return true;
+    }
+    int popFront()
+    {
+        if (isEmpty()){
+            return -1 ;
+        }
+        int ans = arr[front];
+        arr[front] = -1;
+        // if only one element is present 
+        if (front == rear){
+            front = rear = -1 ;
+        }
+        // by popping out  reach to size -1 then i need to circulate also  
+        else if (front == size - 1){
+            front = 0;
+        }
+        //  this is normal flow for popping 
+        else {
+            front++;
+        }
+        return ans;
+    }
+    int popRear()
+    {
+        if (isEmpty()){
+            return -1 ;
+        }
+        int ans = arr[rear];
+        arr[rear] = -1;
+        if (front == rear){
+            front = rear = -1 ;
+        }
+        // if by too may popping out rear reached towards 0 then you need to circulate it also 
+        else if (rear == 0){
+            rear = size - 1;
+        }
+        else {
+            rear--;
+        }
+        return ans;
+    }
+    int getFront()
+    {
+        if (isEmpty()){
+            return -1; 
+        }
+        return arr[front];
+    }
+    int getRear()
+    {
+        if (isEmpty()){
+            return -1; 
+        }
+        return arr[rear];
+    }
+    bool isEmpty()
+    {
+        return front == -1;
+    }
+    bool isFull()
+    {
+        return (front == 0 && rear == size - 1) || (front != 0 && (rear == (front - 1 + size) % size));
+    }
+};
